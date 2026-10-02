@@ -54,3 +54,6 @@ out.json
 .claude/
 hf-space/weights/
 orchestrator/precompute_log.txt
+
+### 로컬 전용 기록 (디버깅 로그, 핸드오프 문서 등 — 팀 내부용, 커밋 금지) ###
+local-notes/
