@@ -1,0 +1,41 @@
+{
+  "airport-apron": {
+    "boxes_image": "/img/precomputed/airport-apron/boxes.png",
+    "mask_image": "/img/precomputed/airport-apron/mask.png",
+    "coarse_fill_image": "/img/precomputed/airport-apron/coarse_fill.png",
+    "diffusion_preview_image": "/img/precomputed/airport-apron/diffusion_preview.png",
+    "result_image": "/img/precomputed/airport-apron/result.png",
+    "meta": {
+      "detections": 7,
+      "nfe": 10,
+      "latency_ms": 92861,
+      "mock": false
+    }
+  },
+  "harbor-ships-candidate": {
+    "boxes_image": "/img/precomputed/harbor-ships-candidate/boxes.png",
+    "mask_image": "/img/precomputed/harbor-ships-candidate/mask.png",
+    "coarse_fill_image": "/img/precomputed/harbor-ships-candidate/coarse_fill.png",
+    "diffusion_preview_image": "/img/precomputed/harbor-ships-candidate/diffusion_preview.png",
+    "result_image": "/img/precomputed/harbor-ships-candidate/result.png",
+    "meta": {
+      "detections": 49,
+      "nfe": 10,
+      "latency_ms": 67116,
+      "mock": false
+    }
+  },
+  "helicopter-apron": {
+    "boxes_image": "/img/precomputed/helicopter-apron/boxes.png",
+    "mask_image": "/img/precomputed/helicopter-apron/mask.png",
+    "coarse_fill_image": "/img/precomputed/helicopter-apron/coarse_fill.png",
+    "diffusion_preview_image": "/img/precomputed/helicopter-apron/diffusion_preview.png",
+    "result_image": "/img/precomputed/helicopter-apron/result.png",
+    "meta": {
+      "detections": 14,
+      "nfe": 10,
+      "latency_ms": 78109,
+      "mock": false
+    }
+  }
+}

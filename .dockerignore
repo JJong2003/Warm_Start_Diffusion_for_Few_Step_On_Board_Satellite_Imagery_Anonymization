@@ -1,0 +1,15 @@
+.venv
+.gradle
+build
+bin
+모델
+hf-space
+orchestrator
+modal_app.py
+.git
+.claude
+.vscode
+*.log
+*.pdf
+out.json
+__pycache__

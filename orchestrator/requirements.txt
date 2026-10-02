@@ -1,0 +1,12 @@
+# CPU 로컬 테스트: pip install torch --index-url https://download.pytorch.org/whl/cpu
+# GPU 서버로 옮길 때: CUDA 버전에 맞는 torch로 교체 (https://pytorch.org 참고) 후 아래 공통 패키지 설치
+diffusers
+transformers
+peft
+ultralytics
+opencv-python
+numpy
+fastapi
+uvicorn[standard]
+python-multipart
+huggingface_hub

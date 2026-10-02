@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warm-Start Anonymizer — 위성 영상 익명화 체험</title>
+<meta name="description" content="위성 사진 속 민감한 시설을 AI가 지상 전송 전에 스스로 찾아 지우는 온보드 익명화 모델을 직접 체험해보세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<div class="bg-grid" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+        <circle cx="13" cy="13" r="4" fill="#E8A33D"/>
+        <circle cx="13" cy="13" r="10.5" stroke="#5AC8D8" stroke-width="1.2" stroke-dasharray="2 3"/>
+        <circle cx="22.5" cy="8" r="1.6" fill="#5AC8D8"/>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-name">Warm-Start Anonymizer</span>
+        <span class="brand-sub">ON-BOARD SATELLITE IMAGERY ANONYMIZATION</span>
+      </div>
+    </div>
+    <div class="topbar-note">DPM-Solver++ · 10 NFE</div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <h1>위성이 사진을 지상에 보내기 전에, AI가 민감한 대상을 알아서 지웁니다.</h1>
+      <p>전투기나 군항 같은 대상을 모델이 스스로 찾아내고, 그 자리를 주변 배경과 자연스럽게 이어지는 이미지로 바꿔 그립니다. 아래에 사진을 올리면 탐지부터 복원까지 전체 과정을 단계별로 직접 확인할 수 있어요.</p>
+    </div>
+  </section>
+
+  <section class="workbench">
+    <div class="wrap">
+      <div class="panel">
+        <p class="panel-title">이미지 입력</p>
+        <p class="panel-sub">위성 사진을 올리거나, 아래 예시 중 하나를 선택하세요</p>
+
+        <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="이미지 업로드">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#93A6A6" stroke-width="1.4">
+            <path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-linecap="round"/>
+          </svg>
+          <div class="dz-main">여기로 사진을 끌어다 놓거나 클릭해서 올리세요</div>
+          <div class="dz-sub">PNG / JPG</div>
+        </div>
+        <input type="file" id="fileInput" accept="image/png,image/jpeg">
+
+        <div class="preview-strip" id="previewStrip">
+          <img class="preview-thumb" id="previewThumb" alt="">
+          <span class="preview-meta" id="previewMeta"></span>
+        </div>
+
+        <div class="samples-label">또는 예시 위성사진으로 먼저 확인해보기</div>
+        <div class="sample-row" id="sampleRow"></div>
+
+        <div class="run-row">
+          <button class="btn btn-primary" id="runBtn">익명화 실행</button>
+          <span class="run-msg" id="runMsg"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="viewer">
+    <div class="wrap">
+      <div class="viewer-panel">
+        <div class="viewer-head">
+          <div class="viewer-head-left">
+            <span class="viewer-code" id="viewerCode">00</span>
+            <span class="viewer-name" id="viewerName">대기 중</span>
+            <span class="demo-badge" id="demoBadge">DEMO — 실제 모델 아님</span>
+          </div>
+          <div class="viewer-nav">
+            <button class="nav-btn" id="prevBtn" aria-label="이전 단계">‹</button>
+            <button class="nav-btn" id="nextBtn" aria-label="다음 단계">›</button>
+          </div>
+        </div>
+        <div class="stage-list" id="stageList"></div>
+        <div class="viewer-body" id="viewerBody">
+          <div class="viewer-empty">이미지를 올리고 &ldquo;익명화 실행&rdquo;을 누르면<br>단계별 처리 과정이 여기에 표시됩니다.</div>
+        </div>
+        <div class="viewer-caption" id="viewerCaption"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare" id="compareSection">
+    <div class="wrap">
+      <div class="compare-panel">
+        <p class="panel-title">최종 비교</p>
+        <p class="panel-sub">가운데 손잡이를 좌우로 끌어서 원본과 결과를 비교하세요</p>
+        <div class="compare-slider" id="compareSlider">
+          <img id="compareBefore" alt="원본 이미지">
+          <div class="compare-after-wrap" id="compareAfterWrap">
+            <img id="compareAfter" alt="익명화된 이미지">
+          </div>
+          <span class="compare-tag left">원본</span>
+          <span class="compare-tag right">익명화 결과</span>
+          <div class="compare-handle" id="compareHandle"></div>
+        </div>
+        <div class="compare-actions">
+          <a class="btn btn-ghost" id="downloadBtn" download="anonymized_result.png">결과 이미지 다운로드</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="facts">
+    <div class="wrap">
+      <div class="facts-grid">
+        <div class="fact-card">
+          <div class="fact-num">97.6%</div>
+          <div class="fact-label">탐지 회피율</div>
+          <div class="fact-desc">익명화 후에 같은 탐지 AI가 그 대상을 다시 찾아내지 못한 비율입니다.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-num">10회</div>
+          <div class="fact-label">복원 연산 횟수 (NFE)</div>
+          <div class="fact-desc">기존 확산 모델의 절반 이하 연산만으로 비슷한 품질을 얻도록 설계했습니다.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-num">약 0.3초</div>
+          <div class="fact-label">처리 시간</div>
+          <div class="fact-desc">데스크톱 GPU 기준 처리 시간입니다. 온보드 기기에서의 실측은 향후 검증 예정입니다.</div>
+        </div>
+      </div>
+      <p class="facts-footnote">위 수치는 논문의 DOTA v1.0 실험(데스크톱 GPU 기준) 결과이며, 이 데모 서버에서 실제로 측정되는 값과 다를 수 있습니다.</p>
+    </div>
+  </section>
+
+  <section class="advanced">
+    <div class="wrap">
+      <details class="adv-panel" id="advPanel">
+        <summary>운영자 설정 · 서버 연동 가이드</summary>
+        <div class="adv-body">
+          <div class="adv-row">
+            <input type="text" id="apiUrlInput" placeholder="예: https://your-gpu-server.example.com (비워두면 데모 모드)">
+            <button class="btn btn-ghost" id="saveUrlBtn">이 세션에 적용</button>
+            <button class="btn btn-ghost" id="testUrlBtn">연결 테스트</button>
+          </div>
+          <div class="adv-status" id="advStatus">현재: 데모 모드 (서버 주소 미설정)</div>
+          <p class="adv-note">
+            여기서 입력한 주소는 새로고침하면 사라집니다. 실제 배포 시에는 <code>/js/main.js</code>의
+            <code>DEFAULT_API_BASE_URL</code> 값에 서버 주소를 직접 넣어두면, 방문자는 아무 설정 없이 바로 실제 모델 결과를 받게 됩니다.
+          </p>
+          <p class="adv-note">서버는 큐잉을 감안해 동기 응답 대신 작업 제출 + 폴링 방식을 사용합니다. 프런트엔드와 다른 도메인에 서버를 두면 CORS 허용 헤더가 필요합니다.</p>
+          <pre class="adv-code">1) 작업 제출
+POST {서버주소}/api/jobs   (multipart/form-data: image, model_id)
+→ { "job_id": "...", "queue_position": 3 }
+
+2) 상태 폴링
+GET {서버주소}/api/jobs/{job_id}
+→ {
+    "status": "queued" | "processing" | "done" | "error",
+    "queue_position": 2,          // status가 queued일 때만
+    "result": {                   // status가 done일 때만
+      "boxes_image":  "data:image/png;base64,...",
+      "mask_image":   "data:image/png;base64,...",
+      "coarse_fill_image": "data:image/png;base64,...",
+      "diffusion_preview_image": "data:image/png;base64,...",
+      "result_image": "data:image/png;base64,...",
+      "meta": { "detections": 1, "nfe": 10, "latency_ms": 298, "mock": true }
+    },
+    "error_message": "..."         // status가 error일 때만
+  }</pre>
+        </div>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Warm-Start Diffusion for Few-Step On-Board Satellite Imagery Anonymization · Baek, Han, Yun, Park, Koh · Chungnam National University</p>
+    <p>이 페이지는 논문 내용을 체험할 수 있도록 만든 데모이며, 수식이나 학습 세부사항은 논문 원문을 참고해 주세요.</p>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

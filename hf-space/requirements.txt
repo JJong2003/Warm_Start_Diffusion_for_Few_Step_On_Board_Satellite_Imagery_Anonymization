@@ -1,0 +1,10 @@
+spaces
+gradio
+torch
+diffusers
+transformers
+accelerate
+peft
+ultralytics
+opencv-python-headless
+numpy

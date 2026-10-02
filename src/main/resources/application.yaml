@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: model-showcase
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: non_null
+
+server:
+  port: ${PORT:8080}
+
+# 내부 Python GPU 오케스트레이터 (orchestrator/server.py) 주소
+app:
+  orchestrator:
+    enabled: true
+    base-url: ${ORCHESTRATOR_BASE_URL:http://localhost:8000}
+    api-key: ${ORCHESTRATOR_API_KEY:}
+  queue:
+    max-length: 20
+  rate-limit:
+    requests-per-minute: 30
+  upload:
+    max-width: 6000
+    max-height: 6000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never

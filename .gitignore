@@ -1,0 +1,56 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Python orchestrator (local test) ###
+.venv/
+orchestrator/__pycache__/
+orchestrator/**/__pycache__/
+
+### 모델 디렉토리 전체 (베이스 모델/학습 가중치 — 배포 방식 팀 협의 전까지 보류) ###
+모델/
+
+### Reference paper (personal reference material, not project code) ###
+Warm_Start_Diffusion_for_Few_Step_On_Board_Satellite_Imagery_Anonymization.pdf
+
+### 로컬 테스트 산출물 / 비밀 ###
+__pycache__/
+out.json
+*.log
+.claude/
+hf-space/weights/
+orchestrator/precompute_log.txt
