@@ -3,8 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Warm-Start Anonymizer — 위성 영상 익명화 체험</title>
-<meta name="description" content="위성 사진 속 민감한 시설을 AI가 지상 전송 전에 스스로 찾아 지우는 온보드 익명화 모델을 직접 체험해보세요.">
+<title>Warm-Start Anonymizer — 위성 영상 익명화 논문 체험 사이트</title>
+<meta name="description" content="논문 'Warm-Start Diffusion for Few-Step On-Board Satellite Imagery Anonymization'의 온보드 익명화 모델을 직접 체험해볼 수 있는 연구 체험(데모) 사이트입니다.">
+<meta name="color-scheme" content="dark light">
+<script>
+  // 첫 페인트 전에 테마를 정해 깜빡임을 막는다: 저장된 선택 → 없으면 OS 설정 → 없으면 다크.
+  (function(){
+    var t = null;
+    try{ t = localStorage.getItem('theme'); }catch(e){}
+    if (t !== 'light' && t !== 'dark'){
+      t = (window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+    }
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -15,26 +27,55 @@
 
 <header class="topbar">
   <div class="wrap">
-    <div class="brand">
-      <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-        <circle cx="13" cy="13" r="4" fill="#E8A33D"/>
-        <circle cx="13" cy="13" r="10.5" stroke="#5AC8D8" stroke-width="1.2" stroke-dasharray="2 3"/>
-        <circle cx="22.5" cy="8" r="1.6" fill="#5AC8D8"/>
-      </svg>
-      <div class="brand-text">
-        <span class="brand-name">Warm-Start Anonymizer</span>
-        <span class="brand-sub">ON-BOARD SATELLITE IMAGERY ANONYMIZATION</span>
+    <div class="topbar-left">
+      <div class="brand">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+          <circle class="brand-core" cx="13" cy="13" r="4"/>
+          <circle class="brand-ring" cx="13" cy="13" r="10.5" stroke-width="1.2" stroke-dasharray="2 3"/>
+          <circle class="brand-dot" cx="22.5" cy="8" r="1.6"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">Warm-Start Anonymizer</span>
+          <span class="brand-sub">ON-BOARD SATELLITE IMAGERY ANONYMIZATION</span>
+        </div>
       </div>
+      <span class="site-pill">논문 체험 사이트</span>
     </div>
-    <div class="topbar-note">DPM-Solver++ · 10 NFE</div>
+    <div class="topbar-right">
+      <span class="topbar-note">DPM-Solver++ · 10 NFE</span>
+      <!-- href는 js/main.js의 LINKS 값으로 채워진다. 값이 비어 있으면 "준비 중"으로 표시된다. -->
+      <a class="top-link is-pending" data-link="github">GitHub</a>
+      <a class="top-link is-pending" data-link="paper">논문 <span class="pending-tag">준비 중</span></a>
+      <button class="theme-toggle" id="themeToggle" type="button">
+        <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+        </svg>
+        <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+        </svg>
+        <span class="theme-label">화이트 모드</span>
+      </button>
+    </div>
   </div>
 </header>
 
 <main>
   <section class="hero">
-    <div class="wrap">
-      <h1>위성이 사진을 지상에 보내기 전에, AI가 민감한 대상을 알아서 지웁니다.</h1>
-      <p>전투기나 군항 같은 대상을 모델이 스스로 찾아내고, 그 자리를 주변 배경과 자연스럽게 이어지는 이미지로 바꿔 그립니다. 아래에 사진을 올리면 탐지부터 복원까지 전체 과정을 단계별로 직접 확인할 수 있어요.</p>
+    <div class="wrap hero-grid">
+      <div class="hero-main">
+        <h1>위성이 사진을 지상에 보내기 전에, AI가 민감한 대상을 알아서 지웁니다.</h1>
+        <p>전투기나 군항 같은 대상을 모델이 스스로 찾아내고, 그 자리를 주변 배경과 자연스럽게 이어지는 이미지로 바꿔 그립니다. 아래에 사진을 올리면 탐지부터 복원까지 전체 과정을 단계별로 직접 확인할 수 있어요.</p>
+      </div>
+      <aside class="notice" role="note">
+        <span class="notice-tag">체험 사이트</span>
+        <p class="notice-lead">상용 서비스가 아니라, 아래 논문에서 제안한 모델이 어떻게 동작하는지 직접 확인해볼 수 있게 만든 <strong>연구 체험(데모) 사이트</strong>입니다.</p>
+        <div class="notice-paper">
+          <span class="notice-paper-title">Warm-Start Diffusion for Few-Step On-Board Satellite Imagery Anonymization</span>
+          <span class="notice-paper-meta">Baek, Han, Yun, Park, Koh · 충남대학교</span>
+        </div>
+        <p class="notice-foot">결과는 논문의 실험 환경과 다를 수 있어요.</p>
+      </aside>
     </div>
   </section>
 
@@ -45,7 +86,7 @@
         <p class="panel-sub">위성 사진을 올리거나, 아래 예시 중 하나를 선택하세요</p>
 
         <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="이미지 업로드">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#93A6A6" stroke-width="1.4">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
             <path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-linecap="round"/>
           </svg>
@@ -181,7 +222,11 @@ GET {서버주소}/api/jobs/{job_id}
 <footer>
   <div class="wrap">
     <p>Warm-Start Diffusion for Few-Step On-Board Satellite Imagery Anonymization · Baek, Han, Yun, Park, Koh · Chungnam National University</p>
-    <p>이 페이지는 논문 내용을 체험할 수 있도록 만든 데모이며, 수식이나 학습 세부사항은 논문 원문을 참고해 주세요.</p>
+    <p>이 페이지는 논문 내용을 체험할 수 있도록 만든 체험(데모) 사이트이며, 수식이나 학습 세부사항은 논문 원문을 참고해 주세요.</p>
+    <div class="foot-links">
+      <a class="top-link is-pending" data-link="github">GitHub</a>
+      <a class="top-link is-pending" data-link="paper">논문 원문 <span class="pending-tag">준비 중</span></a>
+    </div>
   </div>
 </footer>
 

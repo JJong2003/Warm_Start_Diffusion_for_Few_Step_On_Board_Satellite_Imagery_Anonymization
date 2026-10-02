@@ -7,6 +7,15 @@
   // ============================================================
   const DEFAULT_API_BASE_URL = window.location.origin; // 예: "https://your-gpu-server.example.com"
 
+  // ============================================================
+  // 외부 링크 (상단바·푸터의 [data-link] 요소에 자동 반영된다).
+  // 논문이 게시되면 paper에 URL만 넣으면 "준비 중" 표시가 사라지고 링크가 활성화된다.
+  // ============================================================
+  const LINKS = {
+    github: 'https://github.com/JJong2003/Warm_Start_Diffusion_for_Few_Step_On_Board_Satellite_Imagery_Anonymization',
+    paper: '', // 예: "https://arxiv.org/abs/XXXX.XXXXX" — 아직 미게시
+  };
+
   let apiBaseUrl = DEFAULT_API_BASE_URL.trim();
   let selected = null;      // { kind:'upload'|'sample', getBlob:()=>Promise<Blob>, previewUrl, label, width, height }
   let stages = [];          // rendered stage objects: {code,name,desc,imgUrl}
@@ -39,6 +48,34 @@
 
   // ---------- helpers ----------
   const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+  // ---------- external links ----------
+  document.querySelectorAll('[data-link]').forEach((a) => {
+    const url = LINKS[a.dataset.link];
+    if (!url) return; // 값이 없으면 HTML 기본값(준비 중 표시)을 그대로 둔다
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.classList.remove('is-pending');
+    const tag = a.querySelector('.pending-tag');
+    if (tag) tag.remove();
+  });
+
+  // ---------- theme toggle (dark / light) ----------
+  const themeToggle = $('themeToggle');
+  const themeLabel = themeToggle.querySelector('.theme-label');
+  const root = document.documentElement;
+  function syncThemeLabel(){
+    // 버튼에는 "눌렀을 때 바뀔 모드"를 적는다
+    themeLabel.textContent = root.dataset.theme === 'light' ? '다크 모드' : '화이트 모드';
+  }
+  syncThemeLabel();
+  themeToggle.addEventListener('click', () => {
+    const next = root.dataset.theme === 'light' ? 'dark' : 'light';
+    root.dataset.theme = next;
+    try{ localStorage.setItem('theme', next); }catch(e){}
+    syncThemeLabel();
+  });
 
   function setAdvStatus(){
     advStatus.textContent = apiBaseUrl

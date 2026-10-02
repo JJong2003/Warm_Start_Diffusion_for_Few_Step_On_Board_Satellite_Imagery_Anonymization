@@ -4,6 +4,16 @@
 
 이미지를 업로드하면 탐지 → 마스크 생성 → coarse-fill → diffusion 복원 → 합성으로 이어지는 파이프라인이 단계별로 시각화되어, 수식이나 학습 과정 없이도 "위성 사진 속 민감 시설이 어떻게 지워지는지"를 눈으로 확인할 수 있습니다.
 
+## 링크
+
+| 구분 | 주소 |
+|---|---|
+| 체험 사이트 (모델 직접 사용해보기) | https://warm-start-diffusion-for-few-step-on.onrender.com/ |
+| GitHub | https://github.com/JJong2003/Warm_Start_Diffusion_for_Few_Step_On_Board_Satellite_Imagery_Anonymization |
+| 논문 원문 | _아직 미게시 — 게시되면 여기에 기록_ |
+
+사이트 상단바·푸터에 표시되는 링크는 [`src/main/resources/static/js/main.js`](src/main/resources/static/js/main.js) 맨 위의 `LINKS` 객체에서 관리합니다. 논문이 게시되면 `LINKS.paper`에 URL을 넣으면 "준비 중" 표시가 사라지고 링크가 활성화됩니다. (위 표도 함께 갱신해 주세요.)
+
 ## 모델 소개
 
 위성 사진이 지상으로 전송되기 전, 온보드(on-board) 환경에서 민감 시설(전투기, 군항 등)을 자동으로 탐지해 지우는 파이프라인입니다.
